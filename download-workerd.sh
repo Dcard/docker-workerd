@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -Eeuo pipefail
 
-pkg_version=1.20221111.4
+pkg_version=1.20230221.0
+target_path=./bin/workerd
 
 if [[ $ARCH == arm* ]]; then
   pkg_arch=arm64
@@ -11,4 +12,6 @@ else
 fi
 
 set -x
-curl -L https://registry.npmjs.org/@cloudflare/workerd-linux-${pkg_arch}/-/workerd-linux-${pkg_arch}-${pkg_version}.tgz | tar -xz --strip-components 1
+mkdir -p "$(dirname $target_path)"
+curl -L "https://github.com/cloudflare/workerd/releases/download/v${pkg_version}/workerd-linux-${pkg_arch}" > "$target_path"
+chmod +x "$target_path"
