@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-pkg_version=1.20230221.0
+pkg_version=1.20230404.0
 target_path=./bin/workerd
 
 if [[ $ARCH == arm* ]]; then
