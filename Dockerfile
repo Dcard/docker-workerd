@@ -13,4 +13,4 @@ RUN apt-get update && \
   apt-get install -y libc++-dev libc++abi-dev ca-certificates && \
   rm -rf /var/lib/apt/lists/*
 COPY --from=install /workspace/bin/workerd /usr/local/bin/workerd
-CMD ["workerd"]
+ENTRYPOINT ["workerd"]

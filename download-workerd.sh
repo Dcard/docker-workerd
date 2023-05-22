@@ -2,7 +2,7 @@
 
 set -Eeuo pipefail
 
-pkg_version=1.20230404.0
+pkg_version=1.20230512.0
 target_path=./bin/workerd
 
 if [[ $ARCH == arm* ]]; then
@@ -13,5 +13,5 @@ fi
 
 set -x
 mkdir -p "$(dirname $target_path)"
-curl -L "https://github.com/cloudflare/workerd/releases/download/v${pkg_version}/workerd-linux-${pkg_arch}" > "$target_path"
+curl -L "https://github.com/cloudflare/workerd/releases/download/v${pkg_version}/workerd-linux-${pkg_arch}.gz" | gzip -d > "$target_path"
 chmod +x "$target_path"
