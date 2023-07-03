@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM debian:bookworm-slim AS base
+FROM debian:bullseye-slim AS base
 
 FROM base AS install
 ARG TARGETARCH
