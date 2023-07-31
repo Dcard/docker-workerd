@@ -11,7 +11,7 @@ RUN wget https://apt.llvm.org/llvm.sh && \
 RUN curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.17.0/bazelisk-linux-${TARGETARCH} -o /usr/local/bin/bazelisk && \
   chmod +x /usr/local/bin/bazelisk
 RUN mkdir -p /workspace && \
-  curl -L https://github.com/Dcard/workerd/archive/4bde46d5729f87b5f6a082420f0b5c2c9e8f8f34.tar.gz | tar -zx --strip-component=1 -C /workspace
+  curl -L https://github.com/Dcard/workerd/archive/f9122eb829ad18b3576f1a5ec45c231f67760d7c.tar.gz | tar -zx --strip-component=1 -C /workspace
 WORKDIR /workspace
 RUN echo -e "\n\
 build:linux --action_env=CC=/usr/lib/llvm-14/bin/clang --action_env=CXX=/usr/lib/llvm-14/bin/clang++\n\
