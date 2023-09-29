@@ -20,12 +20,8 @@ RUN <<EOT
 EOT
 
 # Download workerd source code
-RUN <<EOT
-  mkdir -p /workspace
-  curl -L https://github.com/Dcard/workerd/archive/78a1197713946a83d964346fa59487bf9a71858e.tar.gz | tar -zx --strip-component=1 -C /workspace
-EOT
-
 WORKDIR /workspace
+RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20230922.0.tar.gz | tar -zx --strip-component=1 -C ./
 
 # Build workerd
 RUN <<EOT
