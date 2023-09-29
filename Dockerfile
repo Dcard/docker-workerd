@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM debian:bookworm-slim AS base
-
-FROM base AS builder
+FROM debian:bookworm-slim AS builder
 ARG TARGETARCH
 RUN apt-get update
 
@@ -43,7 +41,6 @@ RUN --mount=type=cache,target=/root/.cache/bazelisk \
   cp bazel-bin/src/workerd/server/workerd /usr/local/bin/workerd
 EOT
 
-FROM base
+FROM gcr.io/distroless/cc-debian12:nonroot
 COPY --from=builder /usr/local/bin/workerd /usr/local/bin/workerd
-USER nobody
 ENTRYPOINT ["workerd"]
