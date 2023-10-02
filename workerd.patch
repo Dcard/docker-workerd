@@ -1,0 +1,13 @@
+diff --git a/src/workerd/jsg/setup.c++ b/src/workerd/jsg/setup.c++
+index 7724606..c3eeea2 100644
+--- a/src/workerd/jsg/setup.c++
++++ b/src/workerd/jsg/setup.c++
+@@ -112,7 +112,7 @@ V8System::V8System(kj::Own<v8::Platform> platformParam, kj::ArrayPtr<const kj::S
+   //
+   // (It turns out you can call v8::V8::SetFlagsFromString() as many times as you want to add
+   // more flags.)
+-  v8::V8::SetFlagsFromString("--noincremental-marking");
++  // v8::V8::SetFlagsFromString("--noincremental-marking");
+ 
+ #ifdef __APPLE__
+   // On macOS arm64, we find that V8 can be collecting pages that contain compiled code when

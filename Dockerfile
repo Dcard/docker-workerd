@@ -23,6 +23,10 @@ EOT
 WORKDIR /workspace
 RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20230922.0.tar.gz | tar -zx --strip-component=1 -C ./
 
+# Patch workerd
+COPY workerd.patch ./
+RUN patch -p1 < workerd.patch
+
 # Build workerd
 RUN <<EOT
   echo -e "
