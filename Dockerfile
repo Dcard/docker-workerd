@@ -37,7 +37,8 @@ EOT
 
 RUN --mount=type=cache,target=/root/.cache/bazelisk \
   --mount=type=cache,target=/root/.cache/bazel <<EOT
-  bazelisk build --config=thin-lto //src/workerd/server:workerd
+  bazelisk build --config=thin-lto -c opt //src/workerd/server:workerd
+  strip -S bazel-bin/src/workerd/server/workerd
   cp bazel-bin/src/workerd/server/workerd /usr/local/bin/workerd
 EOT
 
