@@ -1,16 +1,31 @@
 # syntax=docker/dockerfile:1.4
-FROM debian:bookworm-slim AS builder
+FROM debian:bookworm AS builder
 ARG TARGETARCH
-RUN apt-get update
+ARG LLVM_VERSION=17
 
-# Install build dependencies
-RUN apt-get install -y build-essential git lsb-release curl wget software-properties-common gnupg python3 python3-distutils libunwind-14 libc++abi1-14 libc++1-14 libc++-14-dev
+RUN <<EOT
+  rm -f /etc/apt/apt.conf.d/docker-clean
+  echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+EOT
 
 # Install LLVM
-RUN <<EOT
-  wget https://apt.llvm.org/llvm.sh
-  chmod +x llvm.sh
-  ./llvm.sh 14
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked <<EOT
+  apt-get update
+  apt-get install -y --no-install-recommends curl gnupg git patch ca-certificates python3
+  echo "
+deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-${LLVM_VERSION} main
+deb-src http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-${LLVM_VERSION} main
+" > /etc/apt/sources.list.d/llvm.list
+  curl https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+  apt-get update
+  apt-get install -y --no-install-recommends \
+    llvm-${LLVM_VERSION} \
+    lld-${LLVM_VERSION} \
+    clang-${LLVM_VERSION} \
+    libc++-${LLVM_VERSION}-dev \
+    libc++abi-${LLVM_VERSION}-dev \
+    libunwind-${LLVM_VERSION}-dev
 EOT
 
 # Install bazelisk
@@ -29,9 +44,9 @@ RUN patch -p1 < workerd.patch
 
 # Build workerd
 RUN <<EOT
-  echo -e "
-build:linux --action_env=CC=/usr/lib/llvm-14/bin/clang --action_env=CXX=/usr/lib/llvm-14/bin/clang++
-build:linux --host_action_env=CC=/usr/lib/llvm-14/bin/clang --host_action_env=CXX=/usr/lib/llvm-14/bin/clang++
+  echo "
+build:linux --action_env=CC=/usr/lib/llvm-${LLVM_VERSION}/bin/clang --action_env=CXX=/usr/lib/llvm-${LLVM_VERSION}/bin/clang++
+build:linux --host_action_env=CC=/usr/lib/llvm-${LLVM_VERSION}/bin/clang --host_action_env=CXX=/usr/lib/llvm-${LLVM_VERSION}/bin/clang++
 " >> .bazelrc
 EOT
 
