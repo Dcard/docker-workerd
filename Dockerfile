@@ -36,7 +36,7 @@ EOT
 
 # Download workerd source code
 WORKDIR /workspace
-RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20231025.0.tar.gz | tar -zx --strip-component=1 -C ./
+RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20231030.0.tar.gz | tar -zx --strip-component=1 -C ./
 
 # Patch workerd
 COPY workerd.patch ./
