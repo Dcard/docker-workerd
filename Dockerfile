@@ -12,7 +12,7 @@ EOT
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked <<EOT
   apt-get update
-  apt-get install -y --no-install-recommends curl gnupg git patch ca-certificates python3
+  apt-get install -y --no-install-recommends curl gnupg git patch ca-certificates python3 python3-distutils tcl
   echo "
 deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-${LLVM_VERSION} main
 deb-src http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-${LLVM_VERSION} main
@@ -36,7 +36,7 @@ EOT
 
 # Download workerd source code
 WORKDIR /workspace
-RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20231030.0.tar.gz | tar -zx --strip-component=1 -C ./
+RUN curl -L https://github.com/cloudflare/workerd/archive/refs/tags/v1.20240129.0.tar.gz | tar -zx --strip-component=1 -C ./
 
 # Patch workerd
 COPY workerd.patch ./
